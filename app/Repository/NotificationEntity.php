@@ -6,15 +6,35 @@ use DateTime;
 
 class NotificationEntity
 {
-    public int $id;
-    public \DateTimeInterface $created_at;
-    public \DateTimeInterface $updated_at;
+    
+    // protected readonly \DateTimeInterface $updated_at;
 
     public function __construct(
+        // public readonly ?int $id = null,
         public readonly string $body,
-        public readonly string $type
+        public readonly string $type,
+        public string $status = 'new',
+        public readonly DateTime $created_at = new \DateTime(),
+        public DateTime $updated_at = new \DateTime(),
+
     ) {
-     $this->created_at = new \DateTime();
-     $this->updated_at = new \DateTime();
+ 
     }
+
+    public function makeDone():void{
+        $this->status = 'done';
+        $this->updated_at = new \DateTime();
+    }
+
+    // public function setStatus(string $status):self{
+    //     $this->status = $status;
+
+    //     return $this;
+    // }
+
+    // public function setUpdatedAt(\DateTimeInterface $datetime){
+    //     ///
+    // }
+
+    //logika zmiany danych
 }

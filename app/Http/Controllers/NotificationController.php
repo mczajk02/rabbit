@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Service\NotificationStatusService;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -16,10 +17,9 @@ class NotificationController extends Controller
         return view('notification', ['notifications' => $notifications, 'lastNotificationId' => $notifications->last()]);
     }
 
-    public function changeStatus(Notification $notification){
+    public function changeStatus(int $notification, NotificationStatusService $service){
 
-        $notification->status = 'done';
-        $notification->save();
+      $service->markNotificationDone($notification);
 
         // return redirect('notification');
         return response('200');
