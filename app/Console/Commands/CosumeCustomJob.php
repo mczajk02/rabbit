@@ -3,25 +3,33 @@
 namespace App\Console\Commands;
 
 use App\Models\Notification;
+use App\Service\CreateNotificationInterface;
 use Illuminate\Console\Command;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use App\Service\CreateNotificationService;
 
 class CosumeCustomJob extends Command
 {
+
+    
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
     protected $signature = 'app:cosume-custom-job';
-
+    
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Command description';
-
+    
+    public function __construct(private CreateNotificationInterface $createNotificationInterface){
+        parent::__construct();
+    }
     /**
      * Execute the console command.
      */
@@ -46,10 +54,8 @@ class CosumeCustomJob extends Command
             //2 ackk
             //3 logowanie -  monitoring
             //4 proces długotrwały - supervisor https://laravel.com/docs/10.x/queues#supervisor-configuration
-            $notification = new Notification;
-            $notification->type = $data['type'];
-            $notification->body = $data['body'];
-            $notification->save();
+          
+            $this->createNotificationInterface->__invoke($data);
 
             dump($data);
 
