@@ -40,4 +40,5 @@ Route::get('/dispatch', function(){
 
 Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
 Route::post('/notification/{notification}/done', [NotificationController::class, 'changeStatus'])->name('changeStatus');
+Route::get('/notification/recive/{id}', [NotificationController::class, 'reciveNew'])->name('reciveNew');
 

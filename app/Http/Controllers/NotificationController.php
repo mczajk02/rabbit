@@ -12,8 +12,8 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifiactions = Notification::where('status', 'new')->orderBy('created_at')->get();
-        return view('notification', compact('notifiactions'));
+        $notifications = Notification::where('status', 'new')->orderBy('created_at')->get();
+        return view('notification', ['notifications' => $notifications, 'lastNotificationId' => $notifications->last()]);
     }
 
     public function changeStatus(Notification $notification){
@@ -23,6 +23,14 @@ class NotificationController extends Controller
 
         // return redirect('notification');
         return response('200');
+    }
+
+    public function reciveNew($id){
+
+        $newMessagess = Notification::where('id','>', $id)->orderBy('created_at')->get();
+        // dd($newMessagess);
+
+        return response()->json($newMessagess, 200);
     }
 
 }

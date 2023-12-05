@@ -12,10 +12,10 @@
         <th scope="col">Action</th>
     </thead>
     @csrf
-    <tbody class="table-striped">
-        @foreach ($notifiactions as $not)
+    <tbody class="table-striped" id="tableBody">
+        @foreach ($notifications as $not)
         <tr id="row-{{$not->id}}">
-            <td>{{$not->id}}</td>
+            <td class='maxId'>{{$not->id}}</td>
             <td>{{$not->status}}</td>
             <td>{{$not->type}}</td>
             <td>{{$not->body}}</td>
@@ -27,37 +27,12 @@
 @endforeach
     </tbody>
 </table>
+<a id="change-status-route"  href={{route('changeStatus', ['notification' => 'notification_id'])}} hidden></a> 
+<a id="last-message-route"  href={{route('reciveNew', ['id' => 'lastNotificationId'])}} hidden></a> 
+<div id="lastNotificationId" data-id="{{$lastNotificationId->id}}" ></div>
 @endsection
 
+@vite('resources/js/changeStatus.js');
 @section('additionalScript')
-<script>
-$(document).ready(function() {
-            $.ajaxSetup({
-                    headers:
-                 { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-                });
 
-
-            $('.done-button').on('click', function() {
-           
-                var id = $(this).data("id");
-                var route = "{{route('changeStatus', ['notification' => 'notification_id'])}}".replace('notification_id', id)
-
-                $.ajax({
-                    url: route, // Replace with your endpoint URL
-                    type: 'POST',
-                    success: function(response) {
-                        // Handle your response here
-                    $("#row-"+ id).hide();
-
-
-                    },
-                    error: function(error) {
-                    // Handle any errors here
-                    console.error('Error:', error);
-                 }
-            });
-            })
-        });
-</script>
 @endsection
